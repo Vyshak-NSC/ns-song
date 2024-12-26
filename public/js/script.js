@@ -5,8 +5,8 @@ const resultDiv = document.getElementById('results')
 
 // This is where you define the URL for your backend
 const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000'  // Use localhost when working on your computer
-    : 'https://ns-song.onrender.com'; // Use the live URL on Render
+    ? 'http://localhost:3000'            // Use localhost when working on your computer
+    : 'https://ns-song.onrender.com';    // Use the live URL on Render
 
 //add event listener to search button
 searchBtn.addEventListener('click', async function(){
@@ -52,7 +52,7 @@ searchBtn.addEventListener('click', async function(){
 async function downloadSong(videoUrl){
     try{
         // request for file with url as parameter
-        const response = await fetch(`http://localhost:3000/download?url=${encodeURIComponent(videoUrl)}`);
+        const response = await fetch(`${API_BASE_URL}/download?url=${encodeURIComponent(videoUrl)}`);
         if(!response.ok) throw new Error("Failed to download.");
 
         // get filename from content disposition
