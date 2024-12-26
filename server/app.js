@@ -48,7 +48,7 @@ app.get('/search', async(req,res) => {
             url:`https://www.youtube.com/watch?v=${video.videoId}`
         });
 
-    }catch(errror){
+    }catch(error){
         // return any error occurance
         res.status(500).send(`Error searching videos: ${error.message}`);
     }
