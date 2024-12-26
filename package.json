@@ -4,7 +4,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node server/app.js",
-    "postinstall": "./setup.sh"
+    "setup": "./setup.sh",
+    "build": "npm run setup && npm install"
   },
   "keywords": [],
   "author": "vyshak",
