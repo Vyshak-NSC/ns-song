@@ -56,11 +56,9 @@ async function downloadSong(videoUrl){
         // get filename from content disposition
         const contentDisposition = response.headers.get('Content-Disposition');
         // default name
-        let filename = 'donloaded_song.mp3'
-        
-        // if(contentDisposition && contentDisposition.includes('filename=')){
-        //     filename = contentDisposition.split('filename=')[1].replace(/"/g, '')
-        // }
+        const filename = contentDisposition 
+                ? contentDisposition.split('filename=')[1].replace(/"/g,'')
+                : 'song.mp3';
 
         // create a blob - Binary Large Object
         // used in handling audio, video or images
