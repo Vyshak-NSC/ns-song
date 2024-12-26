@@ -3,6 +3,11 @@ const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const resultDiv = document.getElementById('results')
 
+// This is where you define the URL for your backend
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000'  // Use localhost when working on your computer
+    : 'https://your-app.onrender.com'; // Use the live URL on Render
+
 //add event listener to search button
 searchBtn.addEventListener('click', async function(){
     try{
@@ -15,7 +20,7 @@ searchBtn.addEventListener('click', async function(){
         result.setAttribute('class','result-item');
 
         // search for song and parse json
-        const response = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(query)}`)
+        const response = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(query)}`)
         const data = await response.json();
         
         // display the search result with title

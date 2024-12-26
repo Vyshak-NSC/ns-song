@@ -16,7 +16,7 @@ app.use(helmet());
 // allows parsing json
 app.use(bodyParser.json());
 // serve frontedn files
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // handle '/search' url endpoint
 app.get('/search', async(req,res) => {
