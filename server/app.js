@@ -4,8 +4,6 @@ const helmet = require('helmet');
 const ytdl = require('ytdl-core');
 const express = require("express");
 const bodyParser = require("body-parser");
-const { exec } = require("child_process");
-const yts = require("youtube-search-api");
 
 const app = express()
 const port = 3000
@@ -38,86 +36,49 @@ app.get('/search', async(req,res) => {
     if(!query) returnres.status(400).send("Query parameter 'q' required");
 
     try{
-        // store result from api in 'results'
-        // query : search term
-        // fasle : for general search, true for playlist only
-        // 1     : number of results
-        const results = await yts.GetListByKeyword(query, false,1);
-        if(results.items.length === 0) return res.status(404).send("No results found.");
+        // search video with ytdl and store in results
+        const results = await ytdll.getInfo(query)
+        if(!results) return res.status(404).send("No results found");
 
-        // get first result from list
-        const video = results.items[0];
-        
-        // construct the url and send result
+        // extract video details
+        const video = results.videoDetails;
+        //send title and url to user
         res.json({
             title:video.title,
-            url:`https://www.youtube.com/watch?v=${video.id}`
+            url:`https://www.youtube.com/watch?v=${video.videoId}`
         });
+
     }catch{
         // return any error occurance
-        res.status(500).send(`Error searching videos: ${error}`);
+        res.status(500).send(`Error searching videos: ${error.message}`);
     }
 });
 
 
 // handle '/download' url endpoint
-app.get('/download', (req,res) => {
+app.get('/download', async (req,res) => {
     // get url parameter from query
     const videoUrl = req.query.url;
     // ensure url is provided
     if(!videoUrl) return res.status(400).send("Query parameter 'url' required");
-
     // Ensure the URL is properly formatted
     if (!videoUrl.startsWith('https://')) {
         // If the URL doesn't start with 'https://', add it
         videoUrl = `https://${videoUrl.split('://')[1] || videoUrl}`; // handle missing protocol gracefully
     }
+    try{
+        const info = await ytdl.getInfo(videoUrl);
+        const audioFormat = ytdl.chooseFormat(info.formats, {quality:'highestaudio'});
 
+        if(!audioFormat) return res.status(500).send("No audio format available");
+
+        res.setHeader('Content-Disposition', `attachment; filename='${info.videoDetails.title}.mp3`);
+        res.setHeader('Content-Type','audio/mpeg');
+        ytdl(videoUrl, {format:audioFormat}).pipe(res);
+    }catch{
+        res.status(500).send("Error downloading video:",error.message)
+    }
     
-    const outputDir = 'downloads'
-    const command = `yt-dlp -x --audio-format mp3 -o "${outputDir}/%(title)s.%(ext)s" "${videoUrl}"`
-    // description:
-    // -x                                  : extract audio from the video file
-    // --audio-formt mp3                   : convert formt to mp3 
-    // -o "${outputDir}/%(title)s.%(ext)s" : save file in doenload folder with title as name of file
-    // "${videoUrl}"                       : url of which video is to be downloaded
-
-    // exec command to run terminal scripts. 
-    // command - actual command
-    // stdout  - resultant message from command
-    // stderr  - errors or warning from command
-    // err     - error handling in js
-    exec(command, (error,stdout,stderr) => {
-        if(error){
-            console.log("Error:",error)
-            return res.status(500).send(`Error downloading video: ${stderr}`)
-        }
-        
-        // stdout contains all output message of yt-dlp command.
-        // file path is present in following format
-        //      Destination : downloads/songname.mp3
-        // use regex to extract the name
-        const filename = stdout.match(/Destination: (.+\.mp3)/)?.[1]
-        if (!filename) return res.status(500).send("Error identifying downloaded file.");
-
-        // create an absolute path to the file for sending to client
-        const filepath = path.resolve(outputDir,filename);
-
-        // set content disposition in header
-        // tells browser its a file being sent
-        // path.basename(filepath) extracts filename from path and set it as filename parameter
-        res.setHeader('Content-Disposition',`attachment; filename="${path.basename(filepath)}"`)
-        // send file to client
-        res.download(filepath, (error) => {
-            if(error){
-                console.error("Error sending file:",error);
-                res.status(500).send("Error sending file.");
-            }
-        });
-
-
-    });
-    //exec(command,callback) : handles yt-dlp in terminal. handles errors
 });
 
 // start server. listen for request
