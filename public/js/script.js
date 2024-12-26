@@ -4,9 +4,7 @@ const searchBtn = document.getElementById('search-btn');
 const resultDiv = document.getElementById('results')
 
 // This is where you define the URL for your backend
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000'            // Use localhost when working on your computer
-    : 'https://ns-song.onrender.com';    // Use the live URL on Render
+const API_BASE_URL = 'https://ns-song.onrender.com';    // Use the live URL on Render
 
 //add event listener to search button
 searchBtn.addEventListener('click', async function(){
