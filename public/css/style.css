@@ -1,0 +1,115 @@
+h1{
+    background-color:  #1e1e1e;
+    color: #ddd;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-bar{
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    position: relative;
+    font-size: 1rem;
+}
+
+
+.search-bar label{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #999;
+    pointer-events: none;
+    font-size: 1rem;
+    font-family:Arial, Helvetica, sans-serif;
+    transition: 0.2s ease-in-out;
+}
+.search-bar input:focus ~ label{
+    top: -5px;
+    font-size: 0.5rem;
+    transition: 0.2s ease-in-out;
+}
+
+
+#search-input{
+    border: none;
+    font-size: 1rem;
+    margin: 0 10px;
+    border-bottom: 2px solid #ddd;
+    color:#eee;
+}
+
+#search-input:focus{
+    outline: none;
+    color: #fff;
+    border-bottom: 2px solid rgb(85, 190, 250);
+}
+
+#search-input, #search-input:focus{
+    background-color: transparent;
+    outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    transition: background-color 5000s;
+  -webkit-text-fill-color: #fff !important;
+}
+
+
+#search-btn{
+    color: #fff;
+    left: 5px;
+    background:#016DD9;
+    border: 1px solid #999;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+
+
+#results{
+    background-color: rgba(0.1,0.1,0.1,0.2);
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    height: 50vh;
+}
+
+.result-item{
+    background-color:  #1e1e1e;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-item p{
+    font-weight: bold;
+}
+
+.btn{
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background: #016DD9;
+    outline: 0;
+    height: max-content;
+    width: 80px;
+    padding: 10px 5px;
+    border-radius: 5px;
+    top: 5px;
+    position: relative;
+}
+
+.add-btn{
+    background: rgb(154, 162, 160);
+}

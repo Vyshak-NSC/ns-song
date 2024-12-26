@@ -1,0 +1,19 @@
+{
+  "name": "ns-song",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "vyshak",
+  "license": "ISC",
+  "description": "search an install song from youtube",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "youtube-search-api": "^1.2.2"
+  }
+}
