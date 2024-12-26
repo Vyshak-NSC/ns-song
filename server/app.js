@@ -18,6 +18,15 @@ app.use(bodyParser.json());
 // serve frontedn files
 app.use(express.static(path.join(__dirname, "public")));
 
+const allowedOrigins = ['https://ns-song-ejb1.onrender.com']; // Add your frontend domain here
+
+// Enable CORS for your frontend domain
+app.use(cors({
+  origin: allowedOrigins,  // Allows only the frontend domain
+  methods: ['GET', 'POST'],  // Specify allowed HTTP methods
+}));
+
+
 // handle '/search' url endpoint
 app.get('/search', async(req,res) => {
     // get query parameter q
